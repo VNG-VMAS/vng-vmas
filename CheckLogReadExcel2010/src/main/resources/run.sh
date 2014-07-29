@@ -21,7 +21,7 @@ bin=`cd "$bin" > /dev/null;pwd`
 this="$bin/$script"
 cd $bin
 case $1 in
-3) java -cp $bin/*.jar com.vng.readexcel2010 $2 $3;;
+3) java -cp $bin/*.jar com.vng.readexcel2010;;
 2) java -cp $bin/*.jar com.vng.ConvertBigIntToInteger $2 $3;;
-1) java -cp $bin/*.jar com.vng.CheckLog $2 $3;;
+1) java -cp $bin/*.jar com.vng.CheckLog $2 $3 $4;;
 esac
