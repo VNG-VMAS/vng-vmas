@@ -25,7 +25,7 @@ public class CheckLog {
 		Calendar calendar = Calendar.getInstance();
 		Connection connection = null;
 		PreparedStatement pst;
-		
+
 		// Check args
 		try {
 			vngProperty.load(new FileInputStream("VNG.properties"));
@@ -71,7 +71,8 @@ public class CheckLog {
 		}
 		serverName = vngProperty.getProperty(gameCode + ".name");
 		if (groups == null || serverListFile == null || serverMapConnection == null || serverMapTable == null | serverMapQuerry == null) {
-			System.out.println("File VNG.properties phai co dang\nTMN.groups=TMN_g1#TMN_g2\nTMN.date_format=yyyymmdd\nTMN.server_list.file=server.txt\nTMN.server_map.connection=jdbc:mysql://host:port/database#user#password\nTMN.server_map.table=serverList\nTMN.server_map.query=insert into");
+			System.out
+					.println("File VNG.properties phai co dang\nTMN.groups=TMN_g1#TMN_g2\nTMN.date_format=yyyymmdd\nTMN.server_list.file=server.txt\nTMN.server_map.connection=jdbc:mysql://host:port/database#user#password\nTMN.server_map.table=serverList\nTMN.server_map.query=insert into");
 			return;
 		}
 		Properties gameProperty = new Properties();
@@ -102,21 +103,19 @@ public class CheckLog {
 			try {
 				gameProperty.load(new FileInputStream(vngGroups[i] + ".properties"));
 				String[] logType = ((String) gameProperty.get("log_types")).split("#");
-				gameProperties[i] = new String[logType.length];
+				gameProperties[i] = new String[logType.length + 1];
 				gameProperties[i][0] = (String) gameProperty.getProperty("base_dir");
-				for (int j = 1; j < logType.length; j++) {
-					gameProperties[i][j] = logType[j];
+				for (int j = 0; j < logType.length; j++) {
+					gameProperties[i][j + 1] = ((String) gameProperty.get(logType[j] + ".pattern")).replace("?", ".").replace("*", ".*");
 				}
 			} catch (IOException e) {
 				System.out.println("Khong tim thay file " + vngGroups[i] + ".properties");
 				return;
 			}
 		}
-
 		for (int i = 0; i < gameProperties.length; i++) {
 			if (gameProperties[i].length == 2)
 				continue;
-
 			try {
 				calendar.setTime(dateFormat.parse(startDate));
 			} catch (Exception e) {
@@ -134,11 +133,9 @@ public class CheckLog {
 							File listOfLogs[] = new File(gameProperties[i][0] + "/" + dateFormat.format(calendar.getTime()) + "/" + listOfServer[j].getName()).listFiles();
 							for (int l = 1; l < gameProperties[i].length; l++) {
 								for (int k = 0; k < listOfLogs.length; k++) {
-									if (listOfLogs[k].getName().matches("^ccu[^.]+.csv")) {
-										if (listOfLogs[k].getName().contains(gameProperties[i][l]) && listOfLogs[k].length() / 1024 >= ccuFilesize) {
-											count++;
-											break;
-										}
+									if (listOfLogs[k].getName().matches(gameProperties[i][l]) && listOfLogs[k].length() / 1024 >= ccuFilesize) {
+										count++;
+										break;
 									}
 								}
 								if ((count == 2) && !server.contains(listOfServer[j].getName())) {
