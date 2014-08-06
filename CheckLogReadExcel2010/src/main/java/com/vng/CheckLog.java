@@ -127,7 +127,6 @@ public class CheckLog {
             }
             calendar.add(Calendar.DATE, -1);
             while (!dateFormat.format(calendar.getTime()).equals(endDate)) {
-                System.out.println(dateFormat.format(calendar.getTime()));
                 calendar.add(Calendar.DATE, 1);
                 File folder = new File((gameProperties[i][0] + "/" + dateFormat.format(calendar.getTime()) + "/").toString());
                 if (folder.exists()) {
