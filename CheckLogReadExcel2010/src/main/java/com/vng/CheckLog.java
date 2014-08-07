@@ -151,7 +151,7 @@ public class CheckLog {
                                         pst.setInt(1, Integer.parseInt(listOfServer[j].getName()));
                                         pst.setString(2, serverName + listOfServer[j].getName());
                                         pst.setInt(3, 1);
-                                        pst.setString(4, dateTimeFormat.format(calendar.getTime());
+                                        pst.setString(4, dateTimeFormat.format(calendar.getTime()));
                                         pst.setString(5, null);
                                         pst.setString(6, null);
                                         pst.executeUpdate();
